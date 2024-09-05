@@ -157,6 +157,8 @@ MonoBehaviour:
   moveSpeed: 2
   rotationSpeed: 300
   boundaryRadius: 10
+  wormSegmentPrefab: {fileID: 507526250996881983, guid: afe8e225351e66c46821a7d1842fa41a, type: 3}
+  initialSize: 1
 --- !u!58 &407795546
 CircleCollider2D:
   m_ObjectHideFlags: 0
