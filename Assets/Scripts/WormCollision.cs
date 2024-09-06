@@ -17,7 +17,14 @@ public class WormCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("Food"))
         {
             Debug.Log("Player worm ate some food!");
-            wormMovement.GrowWorm(1);
+
+            // get the food object
+            Food food = collision.gameObject.GetComponent<Food>();
+
+            // grow the worm based on the food size
+            wormMovement.GrowWorm(food.size);
+
+            // destroy the food
             Destroy(collision.gameObject);
         }
     }

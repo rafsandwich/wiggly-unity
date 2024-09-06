@@ -11,36 +11,49 @@ public class WormMovement : MonoBehaviour
     public float boundaryRadius = 10f; // same as the background radius, only used if StayWithinBoundary()
 
     //public GameObject wormSegmentPrefab;
-    //private List<Transform> segments = new List<Transform>();
-    //public int initialSize = 1;
 
-    public Transform wormHead;
+    public float baseWormLength = 1f;
+    public float baseWormThickness = 0.5f;
+    public float growthFactor = 0.1f;
 
-    private int wormSize = 1;
+    private float currentWormLength;
+    private float currentWormThickness;
 
     void Start()
     {
+        // set initial worm length and thickness
+        currentWormLength = baseWormLength;
+        currentWormThickness = baseWormThickness;
 
+        // apply initial scale to worm
+        transform.localScale = new Vector3(currentWormThickness, currentWormLength, 1);
     }
 
     void Update()
     {   
         // dealing with mass affecting speed
-        float currentSpeed = baseSpeed / wormSize;
+        //float currentSpeed = baseSpeed / wormSize;
 
-        // moving the snake forward
-        wormHead.Translate(Vector2.up * currentSpeed * Time.deltaTime);
+        // moving the worm forward
+        transform.Translate(Vector2.up * baseSpeed * Time.deltaTime);
 
-        // rotating the snake based on player input (A/D or Left/Right Arrow keys)
+        // rotating the worm based on player input (A/D or Left/Right Arrow keys)
         float rotation = Input.GetAxis("Horizontal") * -rotationSpeed * Time.deltaTime;
         transform.Rotate(0, 0, rotation);
 
         //StayWithinBoundary();
     }
 
-    public void GrowWorm(int addedSize)
+    public void GrowWorm(float foodSize)
     {
-        wormSize += addedSize;
+        // increase worm length and thickness based on food size
+        currentWormLength += foodSize * growthFactor;
+        currentWormThickness += foodSize * growthFactor * 0.5f; // thickness grows slower than length
+
+        // apply updated scale to the worm
+        transform.localScale = new Vector3(currentWormThickness, currentWormLength, 1);
+
+        Debug.Log("Current worm length is: " + currentWormLength);
     }
 
     void StayWithinBoundary()
