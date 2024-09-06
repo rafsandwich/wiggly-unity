@@ -15,7 +15,7 @@ public class WormMovement : MonoBehaviour
     public float baseWormLength = 1f;
     public float baseWormThickness = 0.5f;
     public float growthFactor = 0.1f;
-    public float segmentSpacing = 0.5f; // distance between segments
+    //public float segmentSpacing = 0.5f; // distance between segments
 
     private float currentWormLength;
     private float currentWormThickness;

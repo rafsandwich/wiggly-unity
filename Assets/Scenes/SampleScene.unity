@@ -163,6 +163,7 @@ MonoBehaviour:
   baseWormLength: 1
   baseWormThickness: 0.5
   growthFactor: 0.1
+  segmentSpacing: 0.5
 --- !u!58 &407795546
 CircleCollider2D:
   m_ObjectHideFlags: 0

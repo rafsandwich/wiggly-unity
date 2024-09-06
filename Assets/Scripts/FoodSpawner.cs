@@ -32,9 +32,6 @@ public class FoodSpawner : MonoBehaviour
         float randomSize = Random.Range(minFoodSize, maxFoodSize);
         newFood.transform.localScale = new Vector3(randomSize, randomSize, 1);
 
-        // match collider size to visual size
-        newFood.GetComponent<CircleCollider2D>().radius = randomSize / 2;
-
         // store the size in a variable to pass on when eaten
         newFood.GetComponent<Food>().size = randomSize;
 
