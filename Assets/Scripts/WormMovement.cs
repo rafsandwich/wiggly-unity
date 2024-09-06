@@ -23,13 +23,21 @@ public class WormMovement : MonoBehaviour
     private List<Transform> segments = new List<Transform>(); // stores the worms segments
     private List<Vector2> previousPositions = new List<Vector2>(); // to track positions for segment following
 
+    private float currentSpeed;
+
     //CapsuleCollider2D wormCollider;
 
     void Start()
     {
+
+        // limiting frame rate for constant behaviour in editor and build
+        Application.targetFrameRate = 60;
+
         // set initial worm length and thickness
         currentWormLength = baseWormLength;
         currentWormThickness = baseWormThickness;
+
+        currentSpeed = baseSpeed;
 
         // apply initial scale to worm
         transform.localScale = new Vector3(currentWormThickness, currentWormThickness, 1); // currentWormLength
@@ -45,13 +53,21 @@ public class WormMovement : MonoBehaviour
         //wormCollider.size = new Vector2(currentWormThickness, currentWormLength);
     }
 
-    void Update()
-    {   
+    private void Update()
+    {
+        // physics moved to FixedUpdate() to prevent speed changes during build
+    }
+
+
+    void FixedUpdate()
+    {
         // dealing with mass affecting speed
         //float currentSpeed = baseSpeed / wormSize;
 
-        // moving the worm forward
-        transform.Translate(Vector2.up * baseSpeed * Time.deltaTime);
+        // moving the worm forward using normalised direction to prevent speed changes due to scale
+        Vector3 forwardDirection = transform.up.normalized;
+        transform.position += forwardDirection * baseSpeed * Time.deltaTime;
+        //transform.Translate(Vector2.up * currentSpeed * Time.deltaTime);
 
         // rotating the worm based on player input (A/D or Left/Right Arrow keys)
         float rotation = Input.GetAxis("Horizontal") * -rotationSpeed * Time.deltaTime;
@@ -70,11 +86,14 @@ public class WormMovement : MonoBehaviour
         for (int i = 1; i < segments.Count; i++)
         {
             Transform segment = segments[i];
-            Vector2 targetPosition = previousPositions[i * 10]; // spacing between segments
 
-            // smoothly move the segment towards the target position
-            segment.position = Vector2.Lerp(segment.position, targetPosition, 0.5f);
+            if (i * 10 < previousPositions.Count) // fix argumentoutofrangeexception upon eating too much food at once
+            {
+                Vector2 targetPosition = previousPositions[i * 10]; // spacing between segments
 
+                // smoothly move the segment towards the target position
+                segment.position = Vector2.Lerp(segment.position, targetPosition, 0.5f);
+            }
             //segment.rotation = Quaternion.identity; // if want to lock rotation of segments
         }
 
@@ -88,10 +107,17 @@ public class WormMovement : MonoBehaviour
         //currentWormLength += foodSize * growthFactor;
         //currentWormThickness += foodSize * growthFactor * 0.5f; // thickness grows slower than length
 
-        currentWormThickness += growthFactor * foodSize;
+        float sizeIncrease = growthFactor * foodSize;
+        currentWormThickness += sizeIncrease;
 
-        // apply updated scale to the worm
-        transform.localScale = new Vector3(currentWormThickness, currentWormThickness, 1); //currentWormLength
+        // scale all segments to the new thickness
+        foreach (Transform segment in segments)
+        {
+
+            // apply updated scale to the worm
+            segment.localScale = new Vector3(currentWormThickness, currentWormThickness, 1); //currentWormLength
+
+        }
 
         Debug.Log("Current worm thickness is: " + currentWormThickness);
 
@@ -104,7 +130,7 @@ public class WormMovement : MonoBehaviour
         GameObject newSegment = Instantiate(wormSegmentPrefab, lastSegment.position, Quaternion.identity);
 
         // scale the segment to match the size of the worm
-        newSegment.transform.localScale = new Vector3(currentWormLength, currentWormThickness, 1);
+        newSegment.transform.localScale = new Vector3(currentWormThickness, currentWormThickness, 1);
 
         segments.Add(newSegment.transform);
 
