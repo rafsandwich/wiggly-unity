@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WormMovement : MonoBehaviour
@@ -25,6 +26,8 @@ public class WormMovement : MonoBehaviour
 
     private float currentSpeed;
 
+    public TextMeshProUGUI scoreText;
+
     //CapsuleCollider2D wormCollider;
 
     void Start()
@@ -48,6 +51,8 @@ public class WormMovement : MonoBehaviour
         // track initial position
         previousPositions.Add(transform.position);
 
+        UpdateScore();
+
         //wormCollider = GetComponent<CapsuleCollider2D>();
 
         //wormCollider.size = new Vector2(currentWormThickness, currentWormLength);
@@ -56,6 +61,7 @@ public class WormMovement : MonoBehaviour
     private void Update()
     {
         // physics moved to FixedUpdate() to prevent speed changes during build
+
     }
 
 
@@ -137,7 +143,16 @@ public class WormMovement : MonoBehaviour
         // add spacing for new segments
         previousPositions.Add(newSegment.transform.position);
 
+        UpdateScore();
+
     }
+
+    void UpdateScore()
+    {
+        int score = Mathf.RoundToInt(currentWormThickness * 100);
+        scoreText.text = "Score: " + score.ToString();
+    }
+
 
     void StayWithinBoundary()
     {

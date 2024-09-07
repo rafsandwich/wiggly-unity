@@ -28,4 +28,14 @@ public class WormCollision : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Boundary"))
+        {
+            Debug.Log("Worm hit the edge, game over!");
+        }
+    }
+
+
 }
