@@ -19,7 +19,7 @@ public class WormMovement : MonoBehaviour
     //public float segmentSpacing = 0.5f; // distance between segments
 
     private float currentWormLength;
-    private float currentWormThickness;
+    public float currentWormThickness;
 
     private List<Transform> segments = new List<Transform>(); // stores the worms segments
     private List<Vector2> previousPositions = new List<Vector2>(); // to track positions for segment following

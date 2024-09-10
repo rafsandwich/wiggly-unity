@@ -6,10 +6,12 @@ public class WormCollision : MonoBehaviour
 {
 
     private WormMovement wormMovement;
+    private GameManager gameManager;
 
     private void Start()
     {
         wormMovement = GetComponent<WormMovement>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,6 +36,7 @@ public class WormCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("Boundary"))
         {
             Debug.Log("Worm hit the edge, game over!");
+            gameManager.GameOver();
         }
     }
 
