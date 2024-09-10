@@ -32,4 +32,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isGameOver = false;
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game quit requested");
+        Application.Quit();
+    }
 }
