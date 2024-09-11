@@ -149,7 +149,7 @@ public class WormMovement : MonoBehaviour
 
     void UpdateScore()
     {
-        int score = Mathf.RoundToInt(currentWormThickness * 100);
+        int score = Mathf.RoundToInt((currentWormThickness * 100) - 50);
         scoreText.text = "Score: " + score.ToString();
     }
 
