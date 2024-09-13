@@ -29,6 +29,8 @@ public class WormCollision : MonoBehaviour
             // destroy the food
             Destroy(collision.gameObject);
         }
+        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -36,6 +38,11 @@ public class WormCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("Boundary"))
         {
             Debug.Log("Worm hit the edge, game over!");
+            gameManager.GameOver();
+        }
+        if (collision.gameObject.CompareTag("Segment"))
+        {
+            Debug.Log("Worm collided with its own segment, game over!");
             gameManager.GameOver();
         }
     }

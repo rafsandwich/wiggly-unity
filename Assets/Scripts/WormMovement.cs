@@ -138,6 +138,12 @@ public class WormMovement : MonoBehaviour
         // scale the segment to match the size of the worm
         newSegment.transform.localScale = new Vector3(currentWormThickness, currentWormThickness, 1);
 
+        // only tag the segment if it's not the first one
+        if (segments.Count > 1)
+        {
+            newSegment.tag = "Segment";  // tag new segments for collisions
+        }
+
         segments.Add(newSegment.transform);
 
         // add spacing for new segments
